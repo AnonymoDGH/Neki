@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Nequi</title>
+    <style>
+        body {
+            background-color: #4a0e4e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #ff0066;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff0066;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Panel de Administración</h1>
+        <table id="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <a href="index.html" class="back-button">Volver al inicio</a>
+    </div>
+    <script>
+        let users = [];
+
+        // Cargar datos de usuarios
+        async function loadUsers() {
+            const response = await fetch('users.json');
+            const data = await response.json();
+            users = data.users;
+            displayUsers();
+        }
+
+        // Mostrar usuarios en la tabla
+        function displayUsers() {
+            const tableBody = document.querySelector('#users-table tbody');
+            tableBody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.username}</td>
+                    <td>${user.role}</td>
+                    <td>$${user.balance.toLocaleString()}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Verificar si el usuario actual es admin
+        function checkAdminAccess() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'user') {
+                alert('Acceso no autorizado');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Cargar datos al iniciar la página
+        window.addEventListener('load', function() {
+            checkAdminAccess();
+            loadUsers();
+        });
+    </script>
+</body>
+</html>

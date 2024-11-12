@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Plata - Nequi</title>
+    <style>
+        body {
+            background-color: #4a0e4e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .balance-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff0066;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        /* ... (mantener los estilos existentes) ... */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tu Plata</h1>
+        <div class="balance-info">
+            <h2>Saldo disponible</h2>
+            <p id="available-balance"></p>
+            <h2>Saldo total</h2>
+            <p id="total-balance"></p>
+        </div>
+        <a href="index.html" class="back-button">Volver al inicio</a>
+    </div>
+    <script>
+        let currentUser = null;
+
+        function loadUserData() {
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+                updateBalanceInfo();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function updateBalanceInfo() {
+            document.getElementById('available-balance').textContent = `$${currentUser.balance.toLocaleString()}`;
+            document.getElementById('total-balance').textContent = `$${currentUser.balance.toLocaleString()}`;
+        }
+
+        // Cargar datos al iniciar la página
+        loadUserData();
+    </script>
+</body>
+</html>

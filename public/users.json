@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "balance": 10000000
+    },
+    {
+      "id": 2,
+      "username": "popbob",
+      "password": "1234",
+      "role": "user",
+      "balance": 100000
+    },
+    {
+      "id": 3,
+      "username": "usuario2",
+      "password": "user456",
+      "role": "user",
+      "balance": 112640000
+    }
+  ]
+}

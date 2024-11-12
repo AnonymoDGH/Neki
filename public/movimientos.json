@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Victoria Baena Ber...",
+    "type": "Envío",
+    "amount": 2050000.00,
+    "message": "Hola, gracias por venir ...",
+    "date": "2024-10-21T10:00:00"
+  },
+  {
+    "name": "Bancolombia",
+    "type": "Recarga",
+    "amount": 530000.00,
+    "date": "2024-10-21T09:00:00"
+  },
+  {
+    "name": "Almacenes del hog...",
+    "type": "Pago",
+    "amount": -2456634.12,
+    "date": "2024-10-21T08:00:00"
+  },
+  {
+    "name": "Nintendo",
+    "type": "Pago",
+    "amount": -566000000.00,
+    "date": "2024-10-20T15:00:00"
+  },
+  {
+    "name": "Préstamo Propulsor",
+    "type": "Abono",
+    "amount": -100000.00,
+    "date": "2024-10-20T14:00:00"
+  }
+]

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio - Nequi</title>
+    <style>
+        /* Copiar los estilos relevantes del index.html y agregar los siguientes */
+        body {
+            background-color: #4a0e4e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .service-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff0066;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="service-name"></h1>
+        <div class="service-info">
+            <p>Información del servicio no disponible en este momento.</p>
+        </div>
+        <a href="index.html" class="back-button">Volver al inicio</a>
+    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const serviceName = params.get('name');
+        document.getElementById('service-name').textContent = serviceName || 'Servicio';
+    </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Usuario - Nequi</title>
+  <style>
+    /* ... (Your styles) ... */
+    body {
+          background-color: #4a0e4e;
+          color: white;
+          font-family: Arial, sans-serif;
+      }
+      .container {
+          max-width: 400px;
+          margin: 0 auto;
+          padding: 20px;
+          text-align: center; /* Center the entire container */
+      }
+      h1 {
+          text-align: center;
+      }
+      .register-form {
+          background-color: rgba(255, 255, 255, 0.1);
+          padding: 20px;
+          border-radius: 10px;
+          width: 100%; /* Make form take full width */
+          margin-bottom: 20px; /* Add some space below the form */
+
+      }
+      .register-form input {
+          display: block;
+          width: 100%;
+          margin-bottom: 10px;
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          background-color: rgba(255, 255, 255, 0.2);  /*Slightly lighter background*/
+          color: white; /* Text color */
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); /*Add a subtle shadow*/
+      }
+      .register-form input:focus {
+          outline: none;
+          background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .register-form button {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          background-color: #ff0066;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /*Add a subtle shadow*/
+      }
+      .register-form button:hover {
+          background-color: #cc0066;
+      }
+      .login-link {
+          text-align: center;
+          margin-top: 10px;
+      }
+      .login-link a {
+          color: #ff0066;
+          text-decoration: none;
+      }
+      .error-message{
+          color: red;
+          margin-bottom: 10px;
+            }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Registro de Usuario</h1>
+    <form id="register-form" class="register-form">
+      <div class="error-message" id="errorMessage"></div>
+      <input type="text" id="username" placeholder="Nombre de usuario" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <input type="password" id="confirm-password" placeholder="Confirmar contraseña" required>
+      <button type="submit">Registrarse</button>
+    </form>
+    <div class="login-link">
+      <a href="index.html">¿Ya tienes cuenta? Inicia sesión aquí</a>
+    </div>
+  </div>
+
+  <script>
+    // Assuming users.json is in the same directory
+    const usersUrl = 'users.json';
+    let users = [];
+
+    //Load Users (should be outside to run on page load)
+    async function loadUsers() {
+      try {
+        const response = await fetch(usersUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        users = data.users || [];
+      } catch (error) {
+        console.error('Error loading users:', error);
+        users = [];
+      }
+    }
+	
+	
+    function showErrorMessage(msg) {
+      const errorMessage = document.getElementById('errorMessage');
+      errorMessage.textContent = msg;
+    }
+	
+	function hideErrorMessage(){
+		const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = "";
+	}
+
+    async function registerUser(event) {
+      event.preventDefault();
+      hideErrorMessage(); // Crucial - clear error messages
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (password !== confirmPassword) {
+        showErrorMessage('Las contraseñas no coinciden.');
+        return;
+      }
+
+      if (username.length < 6 || username.length > 12) {
+        showErrorMessage('El nombre de usuario debe tener entre 6 y 12 caracteres.');
+        return;
+      }
+
+      if (users.some(user => user.username === username)) {
+        showErrorMessage('El nombre de usuario ya existe.');
+        return;
+      }
+
+
+      const newUser = { username, password, balance: 0 };
+	  try{
+
+		 const response = await fetch('/users', {
+		 method: 'PUT',
+		 headers: { 'Content-Type': 'application/json' },
+		 body: JSON.stringify({ users: [...users, newUser] })
+
+		 });
+        
+        if (!response.ok){
+
+
+    const data = await response.json();  //Very important, read the json response
+				if(data && data.error){ showErrorMessage(`Error al registrarse ${data.error}`)
+      			console.error(`PUT fetch error`, data)
+   					} else{
+
+							showErrorMessage(`PUT Error - Status: ${response.status}`) //Show error status
+
+					} 
+
+          return
+        };
+
+
+
+
+  const data = await response.json();
+            alert("Usuario registrado con exito!");
+        document.getElementById('register-form').reset();
+	 }catch(err){
+
+		console.error('Error registering user:', err);
+			 showErrorMessage(`Error en el registro ${err.message}`); 
+
+	}
+
+
+
+    }
+
+
+		
+    loadUsers().then(() => {
+
+  document.getElementById('register-form').addEventListener('submit', registerUser);
+    });
+
+
+  </script>
+</body>
+</html>

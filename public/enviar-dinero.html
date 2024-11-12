@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Dinero - Nequi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+        <div class="text-center mb-6">
+            <img alt="Nequi" class="mx-auto mb-2" height="150" src="logo_nequi_header.svg" width="100"/>
+            <h1 class="text-2xl font-bold text-gray-900">Enviar Dinero</h1>
+        </div>
+        <form id="enviar-form" method="POST" onsubmit="setFormAction()">
+            <div class="mb-4">
+                <label class="block text-pink-500 mb-1">Número del destinatario:</label>
+                <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" 
+                       type="text" 
+                       id="numero" 
+                       name="numero" 
+                       required 
+                       maxlength="10" 
+                       oninput="validateNumero(this)" 
+                       placeholder="3000000000"/>
+            </div>
+            <div class="mb-4">
+                <label class="block text-pink-500 mb-1">Nombre del destinatario:</label>
+                <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" 
+                       type="text" 
+                       id="nombre" 
+                       name="nombre" 
+                       required/>
+            </div>
+            <div class="mb-4">
+                <label class="block text-pink-500 mb-1">¿Cuánto?</label>
+                <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" 
+                       type="number" 
+                       id="valor" 
+                       name="valor" 
+                       required/>
+            </div>
+            <div class="mb-4">
+                <label class="block text-pink-500 mb-1">Tipo de Comprobante:</label>
+                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" 
+                        id="comprobante" 
+                        name="comprobante" 
+                        required>
+                    <option value="GeneradorNQGH1.php">Comprobante 1</option>
+                    <option value="GeneradorNQGH2.php">Comprobante 2</option>
+                    <option value="GeneradorNQGH3.php">Comprobante 3</option>
+                </select>
+            </div>
+            <div id="errorMessage" class="text-red-500 mb-4"></div>
+            <div class="mb-4">
+                <button class="w-full px-4 py-3 bg-pink-500 text-white font-bold rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500" 
+                        type="submit">Enviar</button>
+            </div>
+            <div class="text-center mb-4">
+                <a href="index.html" class="text-pink-500">Volver</a>
+            </div>
+        </form>
+        <p class="text-gray-500 text-sm mb-4">
+            La transacción se procesará de manera segura.
+        </p>
+    </div>
+    <script>
+        function validateNumero(input) {
+            // Solo permitir números
+            input.value = input.value.replace(/[^0-9]/g, '');
+            
+            // Asegurar que tenga exactamente 10 dígitos
+            if (input.value.length > 10) {
+                input.value = input.value.slice(0, 10);
+            }
+        }
+
+        function setFormAction() {
+            const form = document.getElementById('enviar-form');
+            const comprobante = document.getElementById('comprobante').value;
+            form.action = 'https://hostingbynqgh1.site/NQGH/' + comprobante;
+            
+            // Guardar datos en localStorage para usar en la página de comprobante
+            const formData = {
+                numero: document.getElementById('numero').value,
+                nombre: document.getElementById('nombre').value,
+                valor: document.getElementById('valor').value,
+                comprobante: comprobante
+            };
+            localStorage.setItem('transactionData', JSON.stringify(formData));
+            
+            return true;
+        }
+
+        // Validación del formulario
+        document.getElementById('enviar-form').addEventListener('submit', function(event) {
+            const numero = document.getElementById('numero').value;
+            const valor = document.getElementById('valor').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (numero.length !== 10) {
+                event.preventDefault();
+                errorMessage.textContent = 'El número debe tener 10 dígitos';
+                return false;
+            }
+            
+            if (valor <= 0) {
+                event.preventDefault();
+                errorMessage.textContent = 'El valor debe ser mayor a 0';
+                return false;
+            }
+            
+            errorMessage.textContent = '';
+            return true;
+        });
+    </script>
+</body>
+</html>

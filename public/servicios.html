@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios - Nequi</title>
+    <style>
+        /* Copiar los estilos relevantes del index.html y agregar los siguientes */
+        body {
+            background-color: #4a0e4e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .service-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .service-icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff0066;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Servicios</h1>
+        <div class="service-list" id="service-list"></div>
+        <a href="index.html" class="back-button">Volver al inicio</a>
+    </div>
+    <script>
+        const services = [
+            { name: 'Recargas', icon: '📱' },
+            { name: 'Pago de facturas', icon: '📄' },
+            { name: 'Transferencias', icon: '💸' },
+            { name: 'Préstamos', icon: '💰' },
+            { name: 'Seguros', icon: '🛡️' },
+            { name: 'Inversiones', icon: '📈' },
+        ];
+
+        const serviceList = document.getElementById('service-list');
+        services.forEach(service => {
+            const serviceElement = document.createElement('div');
+            serviceElement.className = 'service-item';
+            serviceElement.innerHTML = `
+                <div class="service-icon">${service.icon}</div>
+                <p>${service.name}</p>
+            `;
+            serviceList.appendChild(serviceElement);
+        });
+    </script>
+    </body>
+    </html>
